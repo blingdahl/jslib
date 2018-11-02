@@ -2,6 +2,7 @@
  * @fileoverview Scroll listener.
  */
 
+var scroll = {};
 
 scroll.viewportOffset = 250;
 
