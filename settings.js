@@ -78,9 +78,9 @@ settings.LinkWithHref.prototype.createElement = function() {
   }
   this.elt = $('<a />').css('display', 'block');
   this.elt.text(this.text);
-  var self = this;
+  var _this = this;
   this.elt.click(function() {
-    window.open(self.href);
+    window.open(_this.href);
   });
   return this.elt;
 };
@@ -131,11 +131,11 @@ settings.BooleanSetting.prototype.createElement = function() {
     throw 'boolean setting element already created: ' + this.key;
   }
   var checkboxElt = $('<input type="checkbox">').prop('checked', this.value);
-  var self = this;
+  var _this = this;
   checkboxElt.change(function() {
-    self.value = $(this).prop('checked');
-    self.changeCallbackFn(self.value);
-    self.config.set(self.key, self.value);
+    _this.value = $(this).prop('checked');
+    _this.changeCallbackFn(_this.value);
+    _this.config.set(_this.key, _this.value);
   });
   this.elt = $('<div />');
   this.elt.append(checkboxElt);
@@ -200,11 +200,11 @@ settings.DropdownSetting.prototype.createElement = function() {
     }
     selectElt.append(optionElt);
   }
-  var self = this;
+  var _this = this;
   selectElt.change(function() {
-    self.value = $(this).find(':selected').val();
-    self.changeCallbackFn(self.value);
-    self.config.set(self.key, self.value);
+    _this.value = $(this).find(':selected').val();
+    _this.changeCallbackFn(_this.value);
+    _this.config.set(_this.key, _this.value);
   });
   this.elt = $('<div />');
   this.elt.append(selectElt);
@@ -362,15 +362,15 @@ settings.BooleanInlineSetting.prototype.createElement = function() {
   if (this.elt) {
     throw 'boolean inline setting element already created: ' + this.key;
   }
-  var self = this;
+  var _this = this;
   this.clickableElt = $('<span />').
       append(this.trueElt).
       append(this.falseElt).
       css('cursor', 'pointer').
       click(function() {
-        self.setValue(!self.value);
-        self.changeCallbackFn(self.value);
-        self.config.set(self.key, self.value);
+        _this.setValue(!_this.value);
+        _this.changeCallbackFn(_this.value);
+        _this.config.set(_this.key, _this.value);
       });
   this.elt = $('<span />').append(this.clickableElt);
   this.setValue(this.value);

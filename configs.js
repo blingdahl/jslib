@@ -25,11 +25,11 @@ configs.Config = function(obj, onChangeFn) {
  * @return {configs.Config.Property!} The config property.
  **/
 configs.Config.prototype.getProperty = function(key) {
-  var self = this;
+  var _this = this;
   return new configs.Config.Property(key, function getFn() {
-    return self.get(key);
+    return _this.get(key);
   }, function setFn(value) {
-    self.set(key, value);
+    _this.set(key, value);
   });
 };
 

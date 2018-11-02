@@ -39,7 +39,7 @@ scroll.getPositionInViewport = function(elt) {
  * Gets the position within the viewport.
  *
  * @param {element!} elt The element.
- * @return {boolean} Whether the person is in the viewport.
+ * @return {boolean} Whether the item is in the viewport.
  **/
 scroll.isInViewport = function(elt) {
   return elt.is(':visible') &&
@@ -90,6 +90,60 @@ scroll.ScrollListener.prototype.whatIsInViewport = function() {
 };
 
 /**
+ * Gets the eligible items.
+ *
+ * @param {object!} item The item.
+ * @return {boolean} Whether it is eligible.
+ **/
+scroll.ScrollListener.prototype.isEligible = function(item) {
+  return this.eltFn(item).is(':visible');
+};
+
+/**
+ * Gets the eligible items.
+ *
+ * @return {Array.<object!>!} The eligible items.
+ **/
+scroll.ScrollListener.prototype.getEligibleItems = function() {
+  var eligibleItems = [];
+  for (var i = 0; i < this.items.length; i++) {
+    var item = this.items[i];
+    if (this.isEligible(item)) {
+      eligibleItems.push(item);
+    }
+  }
+  return eligibleItems;
+};
+
+/**
+ * Scrolls to a relative offset.
+ *
+ * @param {number} offset The offset from the current item.
+ * @return {scroll.ScrollListener!} this.
+ **/
+scroll.ScrollListener.prototype.scrollToRelativeItem = function(offset) {
+  var eligibleItems = this.getEligibleItems();
+  if (!eligibleItems) {
+    return this;
+  }
+  var item;
+  for (var i = 0; i < eligibleItems.length; i++) {
+    if (eligibleItems[i] === this.itemInViewport) {
+      item = eligibleItems[i + offset];
+    }
+  }
+  if (!item) {
+    if (offset == 1) {
+      item = eligibleItems[0];
+    } else if (offset == -1) {
+      item = eligibleItems[eligibleItems.length - 1];
+    }
+  }
+  this.eltFn(item).get(0).scrollIntoView();
+  return this;
+};
+
+/**
  * Gets the position within the viewport.
  *
  * @param {number} scrollTop The scroll top.
@@ -106,17 +160,17 @@ scroll.ScrollListener.prototype.setScrollTop = function(scrollTop) {
  * @return {scroll.ScrollListener!} this.
  **/
 scroll.ScrollListener.prototype.listen = function() {
-  var self = this;
-  self.parentElt.scroll(function(e) {
-    if (self.itemChangeCallback) {
-      var curr = self.whatIsInViewport();
-      if (curr !== self.itemInViewport) {
-        self.itemInViewport = curr;
-        self.itemChangeCallback(curr);
+  var _this = this;
+  _this.parentElt.scroll(function(e) {
+    if (_this.itemChangeCallback) {
+      var curr = _this.whatIsInViewport();
+      if (curr !== _this.itemInViewport) {
+        _this.itemInViewport = curr;
+        _this.itemChangeCallback(curr);
       }
     }
-    if (self.scrollCallback) {
-      self.scrollCallback(self.parentElt.scrollTop());
+    if (_this.scrollCallback) {
+      _this.scrollCallback(_this.parentElt.scrollTop());
     }
   });
   return this;
