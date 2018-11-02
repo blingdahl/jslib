@@ -4,6 +4,8 @@
 
 var configs = {};
 
+configs.LOG = false;
+
 /**
  * Creates a Config object.
  *
@@ -24,10 +26,10 @@ configs.Config = function(obj, onChangeFn) {
  **/
 configs.Config.prototype.getProperty = function(key) {
   var self = this;
-  return new configs.Config.Property(key, function setFn(value) {
-    self.set(key, value);
-  }, function getFn() {
+  return new configs.Config.Property(key, function getFn() {
     return self.get(key);
+  }, function setFn(value) {
+    self.set(key, value);
   });
 };
 
@@ -83,8 +85,10 @@ configs.Config.load = function(namespace, callbackFn) {
     var config = new configs.Config(obj, function(json) {
       var configObj = {};
       configObj[configName] = json;
-      chrome.storage.local.set(configObj, function(val){
-        console.log('Set in storage: ' + json);
+      chrome.storage.local.set(configObj, function(val) {
+        if (configs.LOG) {
+          console.log('Set in storage: ' + json);
+        }
       });
     });
     callbackFn(config);
@@ -95,11 +99,29 @@ configs.Config.load = function(namespace, callbackFn) {
  * Creates a Config property object.
  *
  * @param {string} key The key.
- * @param {function(object!)} setFn The set function.
  * @param {function(object!)} getFn The get function.
+ * @param {function(object!)} setFn The set function.
  **/
-configs.Config.Property = function(key, setFn, getFn) {
+configs.Config.Property = function(key, getFn, setFn) {
   this.key = key;
   this.setFn = setFn;
   this.getFn = getFn;
+};
+
+/**
+ * Get the value.
+ *
+ * @return {object!} The value.
+ **/
+configs.Config.Property.prototype.get = function() {
+  return this.getFn();
+};
+
+/**
+ * Get the value.
+ *
+ * @param {object!} value The value.
+ **/
+configs.Config.Property.prototype.set = function(value) {
+  this.setFn(value);
 };
