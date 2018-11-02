@@ -7,7 +7,7 @@ var common = {};
 /**
  * Toggles the cursor position between the candidate line and the summary line.
  *
- * @param {string} expectedHash The hash prefix itf it matches.
+ * @param {string} expectedHash The hash prefix if it matches.
  * @param {string} testFileName The name of the associated test file.
  * @param {string} pageTypeName The plain English name of the page type.
  **/
@@ -38,7 +38,7 @@ common.UrlChecker = function(expectedHash, testFileName, pageTypeName) {
 /**
  * Processes the page if it is ready.
  *
- * @param {object} urlChecker The URL checker.
+ * @param {object!} urlChecker The URL checker.
  * @param {function()} makeProcessorFn The function that creates the processor,
  * or returns null if not ready.
  * @param {function()} cleanUpFn The function that cleans up.
@@ -67,7 +67,7 @@ common.possiblyProcess_ = function(urlChecker, makeProcessorFn, cleanUpFn) {
 /**
  * Toggles the cursor position between the candidate line and the summary line.
  *
- * @param {object} urlChecker The URL checker.
+ * @param {object!} urlChecker The URL checker.
  * @param {function()} makeProcessorFn The function that creates the processor,
  * or returns null if not ready.
  * @param {function()} cleanUpFn The function that cleans up.

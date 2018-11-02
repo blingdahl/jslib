@@ -344,7 +344,6 @@ settings.BooleanInlineSetting = function(trueElt, falseElt, config, key,
  **/
 settings.BooleanInlineSetting.prototype.setValue = function(value) {
   this.value = value;
-  console.log('setting value to ' + value);
   if (value) {
     this.trueElt.show();
     this.falseElt.hide();
