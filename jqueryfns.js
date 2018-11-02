@@ -26,6 +26,9 @@ jQuery.fn.extend({
     return this.findAny(containsStatements);
   },
   findAny: function(querySelectors) {
+    if (!Array.isArray(querySelectors)) {
+      querySelectors = Array.from(arguments);
+    }
     return this.find(querySelectors.join(','));
   },
   float: function(position) {
