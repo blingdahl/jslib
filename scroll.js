@@ -4,7 +4,7 @@
 
 var scroll = {};
 
-scroll.viewportOffset = 250;
+scroll.viewportOffset = 300;
 
 /**
  * Gets the offset parent.
