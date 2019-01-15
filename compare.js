@@ -40,7 +40,7 @@ function compare(a, b, opt_comparator) {
              opt_comparator instanceof String) {
     return compare(a[opt_comparator], b[opt_comparator]);
   }
-  throw new Error('Unexpected type: ' + comparator);
+  throw new Error('Unexpected type: ' + opt_comparator);
 }
 
 /**
